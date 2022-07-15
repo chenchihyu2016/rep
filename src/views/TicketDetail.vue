@@ -66,15 +66,20 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 form {
+    width: 768px;
+
+    @media screen and (max-width: 768px) {
+        width: 95%;
+    }
+
     fieldset {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 768px;
-        padding-top: 20px;
 
         p {
             @include flex(center, space-between);
+
             width: 100%;
             flex: 1;
             margin-bottom: 2rem;
