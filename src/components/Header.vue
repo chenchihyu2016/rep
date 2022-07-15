@@ -29,7 +29,7 @@ export default defineComponent({
         }
 
         function navigateToDetail() {
-            router.push({ name: 'TicketDetail' });
+            router.push({ name: 'TicketDetail', params: { id: -1 } });
         }
 
         return { routeName, navigateToDetail, logoutHandle };
