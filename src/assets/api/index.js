@@ -1,60 +1,81 @@
-const baseURL = 'https://jsonplaceholder.typicode.com';
-const defaultConfig = { headers: { contentType: 'application/json' } };
+const baseURL = 'https://0f33-180-177-37-95.jp.ngrok.io';
 
-class Api {
-    get(url, params, config) {
-        return this.requestHandle('GET', url, params, config);
+async function requestHandle(url, resources, config, method) {
+    const token = localStorage.getItem('token');
+    const requestConfig = {
+        method,
+        headers: {
+            'Content-Type': config?.contentType ?? 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    if (method === 'GET' && resources) {
+        const keys = Object.keys(resources);
+
+        url += '?';
+
+        keys.forEach((key, index) => {
+            const ampersand = index === keys.length - 1 ? '' : '&';
+            const current = `${key}=${resources[key]}${ampersand}`;
+
+            url += current;
+        });
+    } else if (method !== 'GET' && resources) {
+        requestConfig.body = JSON.stringify(resources);
     }
 
-    post(url, data, config) {
-        return this.requestHandle('POST', url, data, config);
-    }
+    try {
+        const completeURI = baseURL + url;
+        const response = await fetch(completeURI, requestConfig);
 
-    put(url, data, config) {
-        return this.requestHandle('PUT', url, data, config);
-    }
+        if (response.status > 399) throw response;
 
-    delete(url, data, config) {
-        return this.requestHandle('DELETE', url, data, config);
-    }
+        const responseJSON = await response.json();
 
-    async requestHandle(method, url, data, config = defaultConfig) {
-        if (method === 'GET') {
-            if (data) {
-                const keys = Object.keys(data);
-                url += '?';
+        return responseJSON;
+    } catch (error) {
+        const { status } = error;
 
-                keys.forEach((key, index) => {
-                    const ampersand = index === keys.length - 1 ? '' : '&';
-                    const current = `${key}=${data[key]}${ampersand}`;
-
-                    url += current;
-                });
-            }
-        } else {
-            config.body = JSON.stringify(data);
+        switch (status) {
+            case 401:
+                // $alertfify.error("權限不足");
+                break;
+            case 500:
+                // $alertfify.error("伺服器出錯");
+                break;
+            default:
         }
 
-        try {
-            const completeURI = baseURL + url;
-            const response = await fetch(completeURI, config);
-            const json = await response.json();
-
-            return json;
-        } catch (error) {
-            const { status } = error;
-
-            switch (status) {
-                case 401:
-                case 403:
-                    // $alertify.error('權限不足');
-                    break;
-                case 500:
-                    // $alertify.error('伺服器出錯');
-                    break;
-            }
-        }
+        return status;
     }
 }
 
-export default new Api();
+export async function get(url, resources, config) {
+    try {
+        return await requestHandle(url, resources, config, 'GET');
+    } catch (error) {
+        throw error.response;
+    }
+}
+export async function post(url, resources, config) {
+    try {
+        return await requestHandle(url, resources, config, 'POST');
+    } catch (error) {
+        throw error.response;
+    }
+}
+export async function put(url, resources, config) {
+    try {
+        return await requestHandle(url, resources, config, 'PUT');
+    } catch (error) {
+        throw error.response;
+    }
+}
+export async function del(url, resources, config) {
+    try {
+        return await requestHandle(url, resources, config, 'DELETE');
+    } catch (error) {
+        throw error.response;
+    }
+}

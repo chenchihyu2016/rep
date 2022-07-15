@@ -1,9 +1,9 @@
-import api from '../index';
+import { post } from '../index';
 
 export function login(request) {
-    return api.post('/login', request);
+    return post('/api/Login', request);
 }
 
 export function logout(request) {
-    return api.post('/logout', request);
+    return post('/api/logout', request);
 }

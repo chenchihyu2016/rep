@@ -1,6 +1,6 @@
 <template>
     <header>
-        <span>TICKET SYSTEM</span>
+        <router-link to="/tickets">TICKET SYSTEM</router-link>
         <div>
             <button
                 class="add_ticket"
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, watch } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 export default defineComponent({

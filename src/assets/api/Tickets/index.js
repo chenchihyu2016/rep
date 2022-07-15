@@ -1,21 +1,22 @@
-import api from '../index';
+import { get, post, put, del } from '../index';
 
 export function getTickets() {
-    return api.get('/tickets');
-}
-
-export function getSingleTicket({ id }) {
-    return api.get(`/tickets/${id}`);
+    // return get('/api/Ticket/Get?page=1&size=30');
+    return get('/api/GetDemo');
 }
 
 export function postSingleTicket(request) {
-    return api.post('/ticket', request);
+    return post('/api/Ticket/CreateTicket', request);
 }
 
 export function putSingleTicket(request) {
-    return api.put('/ticket', request);
+    return put('/api/Ticket/UpdateTicket', request);
 }
 
 export function deleteSingleTicket(request) {
-    return api.delete('/ticket', request);
+    return del('/api/Ticket/DeleteTicket', request);
+}
+
+export function leaveMessageTicket(request) {
+    return del('/api/Ticket/Post', request);
 }

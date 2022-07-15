@@ -18,6 +18,12 @@ const routes = [
         name: 'TicketDetail',
         meta: { layout: 'VIndex' },
         component: () => import('../views/TicketDetail.vue')
+    },
+    {
+        path: '/ticket/:id',
+        name: 'TicketDetail',
+        meta: { layout: 'VIndex' },
+        component: () => import('../views/TicketDetail.vue')
     }
 ];
 

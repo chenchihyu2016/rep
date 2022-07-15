@@ -39,7 +39,7 @@ import { defineComponent, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
-    setup() {
+    setup(props) {
         const router = useRouter();
         const isLoading = ref(false);
         const ticketData = reactive({

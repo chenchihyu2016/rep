@@ -30,10 +30,12 @@
 <script>
 import { defineComponent, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { login } from '@/assets/api/Login';
+import { getParams } from '@/assets/api/Common';
 
 export default defineComponent({
     setup() {
-        const userInfo = reactive({ account: '', mima: '' });
+        const userInfo = reactive({ account: 'qa@gmail.com', mima: 'qa1234' });
         const router = useRouter();
         const isLoading = ref(false);
 
@@ -42,9 +44,17 @@ export default defineComponent({
 
             isLoading.value = true;
 
-            setTimeout(() => {
+            try {
+                const { token, name, roleName } = await login(userInfo);
+
+                localStorage.setItem('token', token);
+                localStorage.setItem('name', name);
+                localStorage.setItem('roleName', roleName);
+
                 router.push({ name: 'Tickets' });
-            }, 1000);
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         return { userInfo, isLoading, loginHandle };
